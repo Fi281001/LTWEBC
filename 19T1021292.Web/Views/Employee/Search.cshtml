@@ -1,0 +1,57 @@
+﻿@model _19T1021292.Web.Models.EmployyeeSearchOutput
+@{
+    Layout = null;
+}
+
+<p style="margin-top:10px;">
+    Có <strong>@Model.RowCount</strong> nhân viên trong tổng số <strong>@Model.PageCount</strong> trang
+</p>
+
+<div class="container">
+
+    <div style="display:flex;flex-wrap:wrap">
+
+        @foreach (var item in Model.Data)
+        {
+            <div class="card" style="width: 25rem; border: 1px solid rgba(0,0,0.8); padding: 4px; margin: 20px; margin-left: 90px; height: 440px;">
+                <div style="text-align: right">
+                    <a href="~/Employee/Edit/@item.EmployeeID" class="btn btn-xs btn-primary">
+                        <i class="fa fa-edit"> </i>
+                    </a>
+                    <a href="~/Employee/Delete/@item.EmployeeID" class="btn btn-xs btn-danger">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
+                <div style="text-align:center">
+                    <img class="" src="~/@item.Photo" alt="Card image cap" style="border-radius: 999px; width: 58px; border: 2px solid rgba(0,0,0.8)">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Họ tên: </strong>@item.FirstName @item.LastName</h5>
+                    <p class="card-text"><strong>Ngày Sinh: </strong>@item.BirthDate</p>
+                    <p class="card-text" style="max-height: 100px; overflow: hidden"><strong>Miêu tả: </strong>@item.Notes</p>
+                    <p class="card-text"><strong>Email: </strong>@item.Email</p>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+<div class="text-center">
+    <ul class="pagination">
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            if (i == Model.Page)
+            {
+                <li class="active"><a href="#">@i</a></li>
+            }
+            else
+            {
+                <li><a href="javascript:;" onclick="doSearch(@i)">@i</a></li>
+            }
+        }
+    </ul>
+</div>
+
+

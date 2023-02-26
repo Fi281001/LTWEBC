@@ -1,0 +1,11 @@
+D:\Workspace\LTWeb\19T1021292\19T1021292.BusinessLayer\bin\Debug\19T1021292.BusinessLayer.dll
+D:\Workspace\LTWeb\19T1021292\19T1021292.BusinessLayer\bin\Debug\19T1021292.BusinessLayer.pdb
+D:\Workspace\LTWeb\19T1021292\19T1021292.BusinessLayer\obj\Debug\19T1021292.BusinessLayers.csproj.AssemblyReference.cache
+D:\Workspace\LTWeb\19T1021292\19T1021292.BusinessLayer\obj\Debug\19T1021292.BusinessLayers.csproj.CoreCompileInputs.cache
+D:\Workspace\LTWeb\19T1021292\19T1021292.BusinessLayer\obj\Debug\19T1021292.BusinessLayer.dll
+D:\Workspace\LTWeb\19T1021292\19T1021292.BusinessLayer\obj\Debug\19T1021292.BusinessLayer.pdb
+D:\Workspace\LTWeb\19T1021292\19T1021292.BusinessLayer\bin\Debug\19T1021292.DataLayers.dll
+D:\Workspace\LTWeb\19T1021292\19T1021292.BusinessLayer\bin\Debug\19T1021292.DomainModels.dll
+D:\Workspace\LTWeb\19T1021292\19T1021292.BusinessLayer\bin\Debug\19T1021292.DataLayers.pdb
+D:\Workspace\LTWeb\19T1021292\19T1021292.BusinessLayer\bin\Debug\19T1021292.DomainModels.pdb
+D:\Workspace\LTWeb\19T1021292\19T1021292.BusinessLayer\obj\Debug\19T1021292.BusinessLayers.csproj.CopyComplete
