@@ -23,11 +23,11 @@
                     </a>
                 </div>
                 <div style="text-align:center">
-                    <img class="" src="~/@item.Photo" alt="Card image cap" style="border-radius: 999px; width: 58px; border: 2px solid rgba(0,0,0.8)">
+                    <img class="" src="~/@item.Photo" alt="Card image cap" style="border-radius: 999px;height: 80px; width: 80px; border: 2px solid rgba(0,0,0.8)">
                 </div>
                 <div class="card-body">
                     <h5 class="card-title"><strong>Họ tên: </strong>@item.FirstName @item.LastName</h5>
-                    <p class="card-text"><strong>Ngày Sinh: </strong>@item.BirthDate</p>
+                    <p class="card-text"><strong>Ngày Sinh: </strong>@item.BirthDate.ToString("dd/MM/yyyy")</p>
                     <p class="card-text" style="max-height: 100px; overflow: hidden"><strong>Miêu tả: </strong>@item.Notes</p>
                     <p class="card-text"><strong>Email: </strong>@item.Email</p>
 

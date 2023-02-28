@@ -7,7 +7,7 @@ using _19T1021292.BusinessLayer;
 using _19T1021292.DomainModels;
 namespace _19T1021292.Web.Controllers
 {
-    
+    [Authorize]
     public class CustomerController : Controller
     {
         private const int PAGE_SIZE = 5;
