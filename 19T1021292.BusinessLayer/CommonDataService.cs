@@ -19,6 +19,7 @@ namespace _19T1021292.BusinessLayer
         private static readonly ICommonDAL<Category> categoryDB;
         private static readonly ICommonDAL<Shipper> shipperDB;
         private static readonly ICommonDAL<Employee> employyeeDB;
+      
         /// <summary>
         /// Ctor
         /// </summary>
@@ -31,6 +32,7 @@ namespace _19T1021292.BusinessLayer
             categoryDB = new DataLayers.SQLServer.CategoryDAL(connectionstring);
             shipperDB = new DataLayers.SQLServer.ShipperDAL(connectionstring);
             employyeeDB = new DataLayers.SQLServer.EmployeeDAL(connectionstring);
+            
         }
         #region xử lý liên quan đến quốc gia
         // lấy danh sách quốc gia

@@ -53,12 +53,34 @@ namespace _19T1021292.Web.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        public ActionResult Change()
+        {
+            return View();
+        }
 
         public ActionResult Logout()
         {
             Session.Clear();
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
+        }
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public ActionResult ChangePassword(string UserName, string oldPassword, string newPassword, string PasswordAgain)
+        {
+            if (newPassword != PasswordAgain)
+            {
+                ModelState.AddModelError("", "Nhập lại mật khẩu không đúng");
+                return View("Change");
+            }
+            bool changePass = UserAccountService.ChangePassword(AccountTypes.Employee, UserName, oldPassword, newPassword);
+
+            if (changePass == false)
+            {
+                ModelState.AddModelError("", "Sai mật khẩu cũ");
+                return View("Change");
+            }
+            return RedirectToAction("Change");
         }
     }
 }

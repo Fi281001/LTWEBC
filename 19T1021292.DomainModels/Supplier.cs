@@ -43,6 +43,9 @@ namespace _19T1021292.DomainModels
         /// </summary>
         public string PostalCode { get; set; }
 
-
+        public static implicit operator Supplier(Product v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

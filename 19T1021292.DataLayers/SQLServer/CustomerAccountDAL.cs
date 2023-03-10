@@ -17,7 +17,42 @@ namespace _19T1021292.DataLayers.SQLServer
 
         public UserAccount Authorize(string userName, string password)
         {
-            throw new NotImplementedException();
+            UserAccount data = null;
+            using (var connection = OpenConnection())
+            {
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = "SELECT * FROM Customers WHERE Email=@Email AND Password=@Password";
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@Email", userName);
+                cmd.Parameters.AddWithValue("@Password", password);
+
+                using (var dbReader = cmd.ExecuteReader(System.Data.CommandBehavior.CloseConnection))
+                {
+                    if (dbReader.Read())
+                    {
+                        data = new UserAccount()
+                        {
+                            UserId = Convert.ToString(dbReader["CustomerID"]),
+                            UserName = Convert.ToString(dbReader["Email"]),
+                            FullName= Convert.ToString(dbReader["CustomerName"]),
+                            ContactName = Convert.ToString(dbReader["ContactName"]),
+                            //FullName = $"{dbReader["FirstName"]} {dbReader["LastName"]}",
+                            Email = Convert.ToString(dbReader["Email"]),
+                            Photo = Convert.ToString(dbReader["Photo"]),
+                            City = Convert.ToString(dbReader["City"]),
+                            Country = Convert.ToString(dbReader["Country"]),
+                            PostalCode = Convert.ToString(dbReader["PostalCode"]),
+                            Address = Convert.ToString(dbReader["Address"]),
+                            Password = "",
+                            RoleNames = ""
+                        };
+                    }
+                    dbReader.Close();
+                }
+                connection.Close();
+            }
+
+            return data;
         }
 
         public bool ChangePassword(string userName, string oldPassword, string newPassword)

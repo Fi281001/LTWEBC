@@ -25,5 +25,12 @@ namespace _19T1021292.DomainModels
         public string RoleNames { get; set; }
 
         public string Photo { get; set; }
+        public string ContactName { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+
+        public string Country { set; get; }
+        public string PostalCode { get; set; }
+
     }
 }

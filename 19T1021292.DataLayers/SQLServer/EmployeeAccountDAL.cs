@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,7 +53,25 @@ namespace _19T1021292.DataLayers.SQLServer
 
         public bool ChangePassword(string userName, string oldPassword, string newPassword)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"UPDATE Employees 
+                                    SET Password = @newPassword 
+                                    WHERE Email = @userName and Password = @oldPassword";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@userName", userName);
+                cmd.Parameters.AddWithValue("@oldPassword", oldPassword);
+                cmd.Parameters.AddWithValue("@newPassword", newPassword);
+
+
+                result = cmd.ExecuteNonQuery() > 0;
+
+                cn.Close();
+            }
+            return result;
         }
     }
 }

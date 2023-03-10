@@ -32,5 +32,41 @@ namespace _19T1021292.Web
 
             return list;
         }
+        public static List<SelectListItem> CategoryNames()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem()
+            {
+                Value = "",
+                Text = "--Chọn Loại Hàng--"
+            });
+            foreach (var item in CommonDataService.ListOfCategories())
+            {
+                list.Add(new SelectListItem()
+                {
+                    Value = item.CategoryID.ToString(),
+                    Text = item.CategoryName
+                });
+            }
+            return list;
+        }
+        public static List<SelectListItem> SupplierNames()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem()
+            {
+                Value = "",
+                Text = "--Chọn Nhà Cung Cấp--"
+            });
+            foreach (var item in CommonDataService.ListOfSuppliers())
+            {
+                list.Add(new SelectListItem()
+                {
+                    Value = item.SupplierID.ToString(),
+                    Text = item.SupplierName
+                });
+            }
+            return list;
+        }
     }
 }

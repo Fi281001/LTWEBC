@@ -138,8 +138,13 @@
     <Compile Include="Models\CategorySearchOutput.cs" />
     <Compile Include="Models\CustomerSearchOutput.cs" />
     <Compile Include="Models\EmployyeeSearchOutput.cs" />
+    <Compile Include="Models\OrderSearchInput.cs" />
+    <Compile Include="Models\OrderSearchOutput.cs" />
     <Compile Include="Models\PaginationSearchInput.cs" />
     <Compile Include="Models\PaginationSearchOutput.cs" />
+    <Compile Include="Models\ProductEditModel.cs" />
+    <Compile Include="Models\ProductSearchInput.cs" />
+    <Compile Include="Models\ProductSearchOutput.cs" />
     <Compile Include="Models\ShipperSearchOutput.cs" />
     <Compile Include="Models\SupplierSearchOutput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -6526,10 +6531,23 @@
     <Content Include="Views\Shipper\Search.cshtml" />
     <Content Include="Views\Customer\Search.cshtml" />
     <Content Include="Views\Employee\Search.cshtml" />
+    <Content Include="Views\Account\Change.cshtml" />
+    <Content Include="Views\Product\Attribute.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\Delete.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\Photo.cshtml" />
+    <Content Include="Views\Product\Search.cshtml" />
+    <Content Include="Views\Order\Details.cshtml" />
+    <Content Include="Views\Order\EditDetail.cshtml" />
+    <Content Include="Views\Order\SearchProducts.cshtml" />
+    <Content Include="Views\Order\Shipping.cshtml" />
+    <Content Include="Views\Order\OrderSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\Employees\" />
+    <Folder Include="Images\Products\" />
     <Folder Include="Views\test\" />
   </ItemGroup>
   <ItemGroup>

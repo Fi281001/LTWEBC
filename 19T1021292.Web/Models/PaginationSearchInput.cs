@@ -23,5 +23,6 @@ namespace _19T1021292.Web.Models
         /// giá trị cần tìm
         /// </summary>
         public string SearchValue { get; set; }
+        
     }
 }
