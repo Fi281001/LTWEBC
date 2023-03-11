@@ -37,7 +37,7 @@ namespace _19T1021292.Web
             List<SelectListItem> list = new List<SelectListItem>();
             list.Add(new SelectListItem()
             {
-                Value = "",
+                Value = "0",
                 Text = "--Chọn Loại Hàng--"
             });
             foreach (var item in CommonDataService.ListOfCategories())
@@ -55,7 +55,7 @@ namespace _19T1021292.Web
             List<SelectListItem> list = new List<SelectListItem>();
             list.Add(new SelectListItem()
             {
-                Value = "",
+                Value = "0",
                 Text = "--Chọn Nhà Cung Cấp--"
             });
             foreach (var item in CommonDataService.ListOfSuppliers())

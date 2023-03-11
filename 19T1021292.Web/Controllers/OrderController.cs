@@ -8,18 +8,15 @@ using _19T1021292.DomainModels;
 namespace _19T1021292.Web.Controllers
 {
 
-    /// <summary>
-    /// 
-    /// </summary>
     [Authorize]
     [RoutePrefix("Order")]
+
     public class OrderController : Controller
     {
         private const string SHOPPING_CART = "ShoppingCart";
         private const string ERROR_MESSAGE = "ErrorMessage";
+        private const string ORDEL_SEARCH = "OrdelCondition";
         private const int PAGE_SIZE = 10;
-        
-        private const string ORDER_SEARCH = "OrderCondition";
 
         /// <summary>
         /// Tìm kiếm, phân trang
@@ -28,41 +25,47 @@ namespace _19T1021292.Web.Controllers
         public ActionResult Index()
         {
             //TODO: Code chức năng tìm kiếm, phân trang cho đơn hàng
-            Models.OrderSearchInput condition = Session[ORDER_SEARCH] as Models.OrderSearchInput;
+
+            Models.OrderSearchInput condition = Session[ORDEL_SEARCH] as Models.OrderSearchInput;
             if (condition == null)
             {
-
                 condition = new Models.OrderSearchInput()
                 {
                     Page = 1,
                     PageSize = PAGE_SIZE,
                     SearchValue = "",
-                    Status = 0
-
+                    Status = 0,
                 };
             }
+
             return View(condition);
         }
-        public ActionResult OrderSearch(Models.OrderSearchInput condition)
+
+        public ActionResult Search(Models.OrderSearchInput condition)//int Page. int PageSize, string searchvalue
         {
             int rowCount = 0;
+            var data = OrderService.ListOrders(condition.Page,
+                                                        condition.PageSize,
+                                                        condition.Status,
+                                                        condition.SearchValue,
+                                                        out rowCount);
 
-            var data = OrderService.ListOrders(condition.Page, condition.PageSize,condition.Status, condition.SearchValue, out rowCount) ;
-
-            Models.OrderSearchOutput result = new Models.OrderSearchOutput()
+            Models.OrderSearchOutput resutl = new Models.OrderSearchOutput()
             {
                 Page = condition.Page,
                 PageSize = condition.PageSize,
+                Status = condition.Status,
                 SearchValue = condition.SearchValue,
                 RowCount = rowCount,
-                Status =condition.Status ,
                 Data = data
             };
 
-            Session[ORDER_SEARCH] = condition;
+            Session[ORDEL_SEARCH] = condition;
 
-            return View(result);
+            return View(resutl);
         }
+
+
         /// <summary>
         /// Xem thông tin và chi tiết của đơn hàng
         /// </summary>
@@ -70,10 +73,15 @@ namespace _19T1021292.Web.Controllers
         /// <returns></returns>
         public ActionResult Details(int id = 0)
         {
-            //TODO: Code chức năng lấy và hiển thị thông tin của đơn hàng và chi tiết của đơn hàng
+            if (id <= 0)
+                return RedirectToAction("Index");
+            var data = OrderService.GetOrder(id);
+            if (data == null)
+                return RedirectToAction("Index");
 
-            return View();
+            return View(data);
         }
+
         /// <summary>
         /// Giao diện Thay đổi thông tin chi tiết đơn hàng
         /// </summary>
@@ -84,9 +92,10 @@ namespace _19T1021292.Web.Controllers
         public ActionResult EditDetail(int orderID = 0, int productID = 0)
         {
             //TODO: Code chức năng để lấy chi tiết đơn hàng cần edit
-
-            return View();
+            OrderDetail data = OrderService.GetOrderDetail(orderID, productID);
+            return View(data);
         }
+
         /// <summary>
         /// Thay đổi thông tin chi tiết đơn hàng
         /// </summary>
@@ -96,9 +105,11 @@ namespace _19T1021292.Web.Controllers
         public ActionResult UpdateDetail(OrderDetail data)
         {
             //TODO: Code chức năng để cập nhật chi tiết đơn hàng
+            int result = OrderService.SaveOrderDetail(data.OrderID, data.ProductID, data.Quantity, data.SalePrice);
 
             return RedirectToAction($"Details/{data.OrderID}");
         }
+
         /// <summary>
         /// Xóa 1 chi tiết trong đơn hàng
         /// </summary>
@@ -109,9 +120,11 @@ namespace _19T1021292.Web.Controllers
         public ActionResult DeleteDetail(int orderID = 0, int productID = 0)
         {
             //TODO: Code chức năng xóa 1 chi tiết trong đơn hàng
+            bool result = OrderService.DeleteOrderDetail(orderID, productID);
 
             return RedirectToAction($"Details/{orderID}");
         }
+
         /// <summary>
         /// Xóa đơn hàng
         /// </summary>
@@ -120,9 +133,12 @@ namespace _19T1021292.Web.Controllers
         public ActionResult Delete(int id = 0)
         {
             //TODO: Code chức năng để xóa đơn hàng (nếu được phép xóa)
+            var result = OrderService.DeleteOrder(id);
+
 
             return RedirectToAction("Index");
         }
+
         /// <summary>
         /// Chấp nhận đơn hàng
         /// </summary>
@@ -131,9 +147,11 @@ namespace _19T1021292.Web.Controllers
         public ActionResult Accept(int id = 0)
         {
             //TODO: Code chức năng chấp nhận đơn hàng (nếu được phép)
+            bool result = OrderService.AcceptOrder(id);
 
             return RedirectToAction($"Details/{id}");
         }
+
         /// <summary>
         /// Xác nhận chuyển đơn hàng cho người giao hàng
         /// </summary>
@@ -142,12 +160,16 @@ namespace _19T1021292.Web.Controllers
         public ActionResult Shipping(int id = 0, int shipperID = 0)
         {
             //TODO: Code chức năng chuyển đơn hàng sang trạng thái đang giao hàng (nếu được phép)
-
+            ViewBag.OrderID = id;
             if (Request.HttpMethod == "GET")
                 return View();
 
+            var result = OrderService.ShipOrder(id, shipperID);
+
+
             return RedirectToAction($"Details/{id}");
         }
+
         /// <summary>
         /// Ghi nhận hoàn tất thành công đơn hàng
         /// </summary>
@@ -156,6 +178,8 @@ namespace _19T1021292.Web.Controllers
         public ActionResult Finish(int id = 0)
         {
             //TODO: Code chức năng ghi nhận hoàn tất đơn hàng (nếu được phép)
+            var result = OrderService.FinishOrder(id);
+
 
             return RedirectToAction($"Details/{id}");
         }
@@ -167,6 +191,8 @@ namespace _19T1021292.Web.Controllers
         public ActionResult Cancel(int id = 0)
         {
             //TODO: Code chức năng hủy đơn hàng (nếu được phép)
+            var result = OrderService.CancelOrder(id);
+
 
             return RedirectToAction($"Details/{id}");
         }
@@ -178,6 +204,8 @@ namespace _19T1021292.Web.Controllers
         public ActionResult Reject(int id = 0)
         {
             //TODO: Code chức năng từ chối đơn hàng (nếu được phép)
+            var result = OrderService.RejectOrder(id);
+
 
             return RedirectToAction($"Details/{id}");
         }
@@ -197,6 +225,7 @@ namespace _19T1021292.Web.Controllers
             }
             return shoppingCart;
         }
+
         /// <summary>
         /// Giao diện lập đơn hàng mới
         /// </summary>
@@ -206,6 +235,7 @@ namespace _19T1021292.Web.Controllers
             ViewBag.ErrorMessage = TempData[ERROR_MESSAGE] ?? "";
             return View(GetShoppingCart());
         }
+
         /// <summary>
         /// Tìm kiếm mặt hàng để bổ sung vào giỏ hàng
         /// </summary>
@@ -219,7 +249,9 @@ namespace _19T1021292.Web.Controllers
             ViewBag.Page = page;
             return View(data);
         }
+
         /// <summary>
+        /// Z
         /// Bổ sung thêm hàng vào giỏ hàng
         /// </summary>
         /// <param name="data"></param>
@@ -254,6 +286,7 @@ namespace _19T1021292.Web.Controllers
             Session[SHOPPING_CART] = shoppingCart;
             return RedirectToAction("Create");
         }
+
         /// <summary>
         /// Xóa 1 mặt hàng khỏi giỏ hàng
         /// </summary>
@@ -268,6 +301,7 @@ namespace _19T1021292.Web.Controllers
             Session[SHOPPING_CART] = shoppingCart;
             return RedirectToAction("Create");
         }
+
         /// <summary>
         /// Xóa toàn bộ giỏ hàng
         /// </summary>
@@ -279,6 +313,7 @@ namespace _19T1021292.Web.Controllers
             Session[SHOPPING_CART] = shoppingCart;
             return RedirectToAction("Create");
         }
+
         /// <summary>
         /// Khởi tạo đơn hàng (với phần thông tin chi tiết của đơn hàng là giỏ hàng đang có trong session)
         /// </summary>

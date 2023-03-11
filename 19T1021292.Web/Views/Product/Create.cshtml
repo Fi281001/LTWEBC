@@ -3,7 +3,6 @@
     ViewBag.Title = "Bổ sung mặt hàng";
 }
 
-
 <div class="box box-primary">
     <div class="box-header with-border ">
     </div>
@@ -11,12 +10,11 @@
     <div class="box-body">
         <form class="form-horizontal" action="~/product/create" method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.ProductID)
             <div class="form-group">
                 <label class="control-label col-sm-2">Tên mặt hàng:</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" name="ProductName" value="@Model.ProductName" autofocus>
-                    @Html.ValidationMessageFor(m => m.ProductName, "", new { @style = "color:#f00" })
+                    @Html.ValidationMessageFor(m => m.ProductName, "", new { @style = "color:#F00" })
 
                 </div>
             </div>
@@ -25,16 +23,15 @@
                 <label class="control-label col-sm-2">Loại hàng:</label>
                 <div class="col-sm-10">
                     <select class="form-control" name="CategoryID">
-                        <option>-- Chọn Loại Hàng --</option>
-                        @foreach (var item in _19T1021292.BusinessLayer.CommonDataService.ListOfCategories())
+
+                        @foreach (var item in SelectListHelper.CategoryNames())
                         {
-                            <option value="@item.CategoryID" selected>
-                                @item.CategoryName
+                            <option value="@item.Value">
+                                @item.Text
                             </option>
                         }
-
                     </select>
-                    @Html.ValidationMessageFor(m => m.CategoryID, "", new { @style = "color:#f00" })
+                    @Html.ValidationMessageFor(m => m.CategoryID, "", new { @style = "color:#F00" })
                 </div>
             </div>
 
@@ -42,32 +39,32 @@
                 <label class="control-label col-sm-2">Nhà cung cấp:</label>
                 <div class="col-sm-10">
                     <select class="form-control" name="SupplierId">
-                        <option>-- Chọn Nhà Cung Cấp --</option>
-                        @foreach (var item in _19T1021292.BusinessLayer.CommonDataService.ListOfSuppliers())
+
+                        @foreach (var item in SelectListHelper.SupplierNames())
                         {
-                            <option value="@item.SupplierID" selected>
-                                @item.SupplierName
+                            <option value="@item.Value" >@item.Text
                             </option>
                         }
-
                     </select>
-                     @Html.ValidationMessageFor(m => m.SupplierID, "", new { @style = "color:#f00" })
+                    @Html.ValidationMessageFor(m => m.SupplierID, "", new { @style = "color:#F00" })
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Đơn vị tính:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" name="Unit" autofocus>
-                    @Html.ValidationMessageFor(m => m.Unit, "", new { @style = "color:#f00" })
-                    @Html.ValidationMessageFor(m => m.Price, "", new { @style = "color:#f00" })
+                    <input type="text" class="form-control" name="Unit" value="@Model.Unit">
+                    @Html.ValidationMessageFor(m => m.Unit, "", new { @style = "color:#F00" })
+
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Giá hàng:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" name="Price">
+                    <input type="text" class="form-control" name="Price" value="@Model.Price">
+                    @Html.ValidationMessageFor(m => m.Price, "", new { @style = "color:#F00" })
+
                 </div>
             </div>
 

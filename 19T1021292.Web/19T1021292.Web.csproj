@@ -6540,9 +6540,9 @@
     <Content Include="Views\Product\Search.cshtml" />
     <Content Include="Views\Order\Details.cshtml" />
     <Content Include="Views\Order\EditDetail.cshtml" />
-    <Content Include="Views\Order\SearchProducts.cshtml" />
     <Content Include="Views\Order\Shipping.cshtml" />
-    <Content Include="Views\Order\OrderSearch.cshtml" />
+    <Content Include="Views\Order\Search.cshtml" />
+    <Content Include="Views\Order\SearchProducts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

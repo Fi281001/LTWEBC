@@ -15,7 +15,7 @@ namespace _19T1021292.Web.Controllers
     public class ProductController : Controller
     {
 
-        private const int PAGE_SIZE = 5;
+        private const int PAGE_SIZE = 8;
         private const string PRODUCT_SEARCH = "ProductCondition";
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace _19T1021292.Web.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            Models.ProductSearchInput condition = Session[PRODUCT_SEARCH] as _19T1021292.Web.Models.ProductSearchInput;
+            Models.ProductSearchInput condition = Session[PRODUCT_SEARCH] as Models.ProductSearchInput;
 
             if (condition == null)
             {
@@ -75,20 +75,27 @@ namespace _19T1021292.Web.Controllers
         {
             if (Request.HttpMethod == "GET")
             {
-                ViewBag.Title = "Bổ sung khách hàng";
+                ViewBag.Title = "Bổ sung mặt hàng";
                 return View(data);
             }
-            if (string.IsNullOrWhiteSpace(data.ProductName))
-                ModelState.AddModelError("ProductName", " Vui lòng nhập tên Hàng");
-            if (string.IsNullOrWhiteSpace(data.Unit))
-                ModelState.AddModelError("Unit", "Vui lòng nhập đơn vị tính");
-            if (data.CategoryID == 0)
-                ModelState.AddModelError("CategoryID", "Vui lòng chọn loại hàng tương ứng");
-            if (data.SupplierID == 0)
-                ModelState.AddModelError("SupplierID", "Vui lòng chọn nhà cung cấp tương ứng");
 
-            if (string.IsNullOrWhiteSpace(data.Photo))
-                data.Photo = "";
+            if (string.IsNullOrWhiteSpace(data.ProductName))
+                ModelState.AddModelError(nameof(data.ProductName), "Tên sản phẩm để rỗng");
+            if (string.IsNullOrWhiteSpace(data.Unit))
+                ModelState.AddModelError(nameof(data.Unit), "Đơn vị tính không được để trống");
+            if (data.Price == 0)
+                ModelState.AddModelError(nameof(data.Price), "Giá hàng phải lớn hơn 0");
+            if (data.CategoryID == 0)
+                ModelState.AddModelError(nameof(data.CategoryID), "Vui lòng chọn loại hàng");
+            if (data.SupplierID == 0)
+                ModelState.AddModelError(nameof(data.SupplierID), "Vui lòng chọn nhà cung cấp");
+            data.Photo = "";
+
+            if (ModelState.IsValid == false)
+            {
+                ViewBag.Title = "Bổ sung mặt hàng";
+                return View("Create", data);
+            }
 
             if (uploadPhoto != null)
             {
@@ -100,8 +107,6 @@ namespace _19T1021292.Web.Controllers
             }
 
             int result = ProductDataService.AddProduct(data);
-
-          
 
             return RedirectToAction("Index");
         }
@@ -144,6 +149,38 @@ namespace _19T1021292.Web.Controllers
         [HttpPost]
         public ActionResult Save(Product data, HttpPostedFileBase uploadPhoto)
         {
+            Models.ProductEditModel result;
+            if (string.IsNullOrWhiteSpace(data.ProductName))
+                ModelState.AddModelError(nameof(data.ProductName), "Tên sản phẩm để rỗng");
+            if (string.IsNullOrWhiteSpace(data.Unit))
+                ModelState.AddModelError(nameof(data.Unit), "Đơn vị tính không được để trống");
+            if (data.Price == 0)
+                ModelState.AddModelError(nameof(data.Price), "Giá hàng phải lớn hơn 0");
+
+
+            if (ModelState.IsValid == false)
+            {
+                ViewBag.Title = "Bổ sung mặt hàng";
+
+                var dataPhotos = ProductDataService.ListPhotos(data.ProductID);
+                var dataAttribute = ProductDataService.ListAttributes(data.ProductID);
+
+                result = new Models.ProductEditModel()
+                {
+                    ProductID = data.ProductID,
+                    ProductName = data.ProductName,
+                    SupplierID = data.SupplierID,
+                    CategoryID = data.CategoryID,
+                    Unit = data.Unit,
+                    Price = data.Price,
+                    Photo = data.Photo,
+                    ListOfAttributes = dataAttribute,
+                    ListOfPhoto = dataPhotos,
+                };
+
+                return View("Edit", result);
+            }
+
             if (uploadPhoto != null)
             {
                 string fileName = $"{DateTime.Now.Ticks}_{uploadPhoto.FileName}";
@@ -153,7 +190,7 @@ namespace _19T1021292.Web.Controllers
                 data.Photo = $"Images/Products/{fileName}";
             }
 
-            bool result = ProductDataService.UpdateProduct(data);
+            ProductDataService.UpdateProduct(data);
 
             return RedirectToAction("Index");
         }
@@ -298,3 +335,4 @@ namespace _19T1021292.Web.Controllers
         }
     }
 }
+
